@@ -30,11 +30,12 @@ USER appuser
 EXPOSE 8080
 
 # Run with explicit memory settings and production profile
-ENTRYPOINT ["java", \
-    "-Xms256m", \
-    "-Xmx512m", \
-    "-XX:+UseG1GC", \
-    "-Dspring.profiles.active=prod", \
-    "-Djava.security.egd=file:/dev/./urandom", \
-    "-jar", \
-    "app.jar"]
+# Use shell form to allow environment variable substitution
+ENTRYPOINT sh -c 'java \
+    -Xms256m \
+    -Xmx512m \
+    -XX:+UseG1GC \
+    -Dspring.profiles.active=prod \
+    -Djava.security.egd=file:/dev/./urandom \
+    -Dspring.datasource.url=jdbc:${DATABASE_URL} \
+    -jar app.jar'

@@ -11,6 +11,8 @@ services:
         fromDatabase:
           name: yoga-pose-db
           property: connectionString
+      - key: JDBC_DATABASE_URL
+        sync: false
     healthCheckPath: /actuator/health
 
 databases:
