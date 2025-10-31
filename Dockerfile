@@ -17,8 +17,8 @@ WORKDIR /app
 # Create a non-root user
 RUN addgroup -g 1001 -S appuser && adduser -u 1001 -S appuser -G appuser
 
-# Copy the jar
-COPY --from=build /app/target/guide-0.0.1-SNAPSHOT.jar app.jar
+# Copy the jar with wildcard to handle any version
+COPY --from=build /app/target/*.jar app.jar
 
 # Change ownership
 RUN chown -R appuser:appuser /app
@@ -26,7 +26,7 @@ RUN chown -R appuser:appuser /app
 # Switch to non-root user
 USER appuser
 
-# Expose port
+# Expose port (Render uses PORT env var, defaults to 8080)
 EXPOSE 8080
 
 # Run with explicit memory settings and production profile
